@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-suite.xml" />
+	<munit:test name="getMoviesFlow-test" doc:id="1395c4df-3923-4c59-8cd3-1305f87daf66" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Select" doc:id="a777ed1a-7ed1-4d93-b54f-d443ccd6f183" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="716c54eb-b7e2-4336-9ec5-9accc8e08aa0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getMoviesFlowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getMoviesFlowtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="c2ccf973-07fe-41fd-9d09-81a1ce8a86f7" >
+				<munit:payload value="#[readUrl('classpath://getMoviesFlowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getMoviesFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getMoviesFlowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getMoviesFlow" doc:id="791e8bf0-8b38-486e-afc6-18319496a707" name="getMoviesFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="aeb217be-35a5-477b-9594-ecdd5c137eff" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getMoviesFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="getTicket-test" doc:id="53f576e6-6db6-43b5-8b19-922b33b7dc6b" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Select" doc:id="172b3097-f190-4fd7-b394-552729603a42" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="55d1e8ce-0a5d-4e57-92c9-90b7e4f93dcc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getTickettest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getTickettest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="8fc506f0-c980-4ec2-9d1c-0351ad8ee516" >
+				<munit:payload value="#[readUrl('classpath://getTickettest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getTickettest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getTickettest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getTicket" doc:id="606470d3-416d-4eb7-98b5-92cb19cf7c12" name="getTicket"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="84a348c2-0ee0-4a8b-bfdd-32e34ad4716b" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getTickettest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="discountFlow-test" doc:id="fc1f22a9-e1bf-4f21-9855-637d544c6e89" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Set Variable" doc:id="7191ee87-a66e-40ab-a0c4-0735a1aa91c8" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="97cc532a-2310-4517-9b7a-8b3ecd239b87" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://discountFlowtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://discountFlowtest\mock_variable_2.dwl')]" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Set Variable" doc:id="29d159c2-0d07-43a7-b873-d6b33a0f4207" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8defa549-b6a4-4384-a2df-18c3b84eba9f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\mock_variable_3.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://discountFlowtest\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://discountFlowtest\mock_variable_5.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Update" doc:id="5260b095-bb26-4695-baa1-5ef273834908" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d3f6e8b2-1adc-4831-8ea5-f7cde33fa6dd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://discountFlowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\mock_variable_7.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_8.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://discountFlowtest\mock_variable_9.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Select" doc:id="f9b3d049-57d8-40de-8b44-46f2cf6c0178" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="009c9413-1e18-4e11-a66a-bd1fa28c7026" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://discountFlowtest\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\mock_variable_11.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_12.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://discountFlowtest\mock_variable_13.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_14.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Set Variable" doc:id="fbf106bc-f2d8-4a4d-9ffa-ca67753dc4af" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="339d26bd-d60a-494a-b29c-25f51ff80607" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\mock_variable_15.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_16.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://discountFlowtest\mock_variable_17.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_18.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Insert" doc:id="9b6178d6-2c86-4239-bc34-b8b418790547" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8e81a0b0-57fd-40c8-9bdd-807e9bd065bb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://discountFlowtest\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\mock_variable_19.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://discountFlowtest\mock_variable_21.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://discountFlowtest\mock_variable_22.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="cf590c68-14e9-4175-b22b-cdba2ea6cbcc" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://discountFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://discountFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://discountFlowtest\set-event_variable_.dwl')]" />
+					<munit:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://discountFlowtest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to discountFlow" doc:id="05d287e1-0725-4b40-824d-250319ca1b1b" name="discountFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="0d1cb6e1-8538-4ff6-b61e-3b48ca495940" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import discountFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="bookTicket-test" doc:id="3bcbb262-d24d-4dfd-8a78-6390572e1107" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Set Variable" doc:id="e947a810-ad3b-4698-8e86-1240403dd875" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="89c2566b-a79a-42c4-859f-782777db4c25" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://bookTickettest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://bookTickettest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="2074d956-6f88-4cc6-ad36-cfcaecaf1ab7" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c3810f5b-260f-4ddf-961b-4a67ca4cc7ad" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://bookTickettest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://bookTickettest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://bookTickettest\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://bookTickettest\mock_variable_4.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://bookTickettest\mock_variable_5.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3d777f11-15c1-4847-94f5-e4616e5cacd0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://bookTickettest\set-event_payload1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://bookTickettest\set-event_attributes1.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://bookTickettest\set-event_variable_1.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to bookTicket" doc:id="76d4cce2-d34c-4b73-bdce-acfcf44d48cd" name="bookTicket"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="36cec311-e05d-4def-982f-7a0d387deb37" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import bookTickettest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="noDiscountFlow-test" doc:id="e0a7d177-302c-4438-b72c-6ee29bcf3940" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Set Variable" doc:id="207ba047-9c84-42e8-9ef7-d9104833e00f" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="82eb45e2-f764-4768-a98e-c975a2a5453e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://noDiscountFlowtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_2.dwl')]" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Copy_of_Set Variable" doc:id="7f20b4d4-ee60-441c-9603-2a0af9d681a7" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d7bd67d2-6d3c-4b0d-88c2-cabcab34e6e5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_3.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://noDiscountFlowtest\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_5.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Copy_of_Set Variable" doc:id="4f0b00e1-d975-49d6-b3df-3abef0fb676b" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="67df92df-dfd4-4366-91e9-a79bc2b4341f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_7.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_8.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_9.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Insert" doc:id="a4131435-3669-4daf-bac3-adc376174652" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="56e37a46-0b0b-492d-9959-567db56bddba" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://noDiscountFlowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_11.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_12.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_13.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_14.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Copy_of_Update" doc:id="c31c6631-6632-4950-a65f-b40f97db5e7d" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ac3c19ad-51c2-465c-bdea-81dea869a861" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://noDiscountFlowtest\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_15.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_16.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_17.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_18.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Select" doc:id="8024487d-b21b-48ae-8c16-dea44861c7f0" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1546a5b1-a88e-41f8-b9a8-8be471a0a076" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://noDiscountFlowtest\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_19.dwl')]" />
+						<munit-tools:variable key="numberOfTickets" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="correlationId" value="#[readUrl('classpath://noDiscountFlowtest\mock_variable_21.dwl')]" encoding="UTF-8" />
+						<munit-tools:variable key="movieId" value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\mock_variable_22.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="57f52e7e-2ca3-4490-bd95-e6c5a4fe4be3" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://noDiscountFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://noDiscountFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://noDiscountFlowtest\set-event_variable_.dwl')]" />
+					<munit:variable key="numberOfTickets" value="#[output application/java --- readUrl('classpath://noDiscountFlowtest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to noDiscountFlow" doc:id="a55ad106-ed30-42a8-b5e7-9efd8201123e" name="noDiscountFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="43f51f29-9a0d-489f-a8fe-237b54ce8421" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import noDiscountFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

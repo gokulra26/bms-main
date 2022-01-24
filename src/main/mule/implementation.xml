@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<flow name="getMoviesFlow" doc:id="edf1635d-9590-4c9b-a4c3-b5f9461742bc" >
+		<db:select doc:name="Select" doc:id="716c54eb-b7e2-4336-9ec5-9accc8e08aa0" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * from main where city= :cname;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'cname' : attributes.queryParams.city}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="9c8b7ffd-01a6-4ff8-8301-5258c48b851b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1d55493b-b00e-4b1b-bf88-92da89cb5014" message="#[payload]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="43b51817-87b6-41d6-b4ac-a76f597bebcf" type="DB:BAD_SQL_SYNTAX">
+				<ee:transform doc:name="Transform Message" doc:id="070cd046-537a-4ecf-9fda-89e59aa0fbd6" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad sql syntax"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="379727f0-84ab-4efe-9047-6d72ce86054f" type="DB:CONNECTIVITY">
+				<ee:transform doc:name="Transform Message" doc:id="7c9076c6-149a-4fde-a556-915a7faef6d6" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "database connectivity error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="48bfa957-e999-41bd-8b65-08dc3e5e0216" type="DB:QUERY_EXECUTION">
+				<ee:transform doc:name="Transform Message" doc:id="cea3f4c8-3a6c-4d61-9101-a9066930c931" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{message: "query execution error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="getTicket" doc:id="34f9f606-8d6b-4f4a-a091-865594114527" >
+		<db:select doc:name="Select" doc:id="55d1e8ce-0a5d-4e57-92c9-90b7e4f93dcc" config-ref="Database_Config">
+			<db:sql ><![CDATA[select ticketId,city,movieName,numberOfTickets,theatreName,
+amountPaid,schedule,discountValue from bookedticket where ticketId= :tid;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'tid' : attributes.queryParams.id}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="00675339-7c7b-4687-aee1-a1f1b04f3946" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="ed9a7c77-a30b-44bc-8daa-d16944659536" message="#[payload]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f0368e14-03dd-49ba-8ac6-843d3030bf5c" type="DB:BAD_SQL_SYNTAX">
+				<ee:transform doc:name="Transform Message" doc:id="1b553e04-a9ae-4793-9ea8-5055939e5556" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "sql syntax error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2fca8c14-6355-4194-9a87-0ef350888a26" type="DB:CONNECTIVITY">
+				<ee:transform doc:name="Transform Message" doc:id="6bb12b12-bda6-41c7-9a62-1223c4b905c5" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "database connectivity error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="e72f010f-e48d-44c7-b501-55cabade6674" type="DB:QUERY_EXECUTION" >
+				<ee:transform doc:name="Copy_of_Transform Message" doc:id="c7cf14e9-104f-49c4-9ca8-abe1faf9ac83" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{message: "query execution error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="bookTicket" doc:id="730559a6-fe7f-468a-a972-f3a4a05bf092" >
+		<set-variable value="#[4]" doc:name="Set Variable" doc:id="89c2566b-a79a-42c4-859f-782777db4c25" variableName="numberOfTickets"/>
+		<choice doc:name="Choice" doc:id="ef4e02af-2b48-45aa-a9bd-7d2ba242770a" >
+			<when expression='#[payload."numberOfTickets" &gt; vars.numberofTickets]'>
+				<flow-ref doc:name="Flow Reference" doc:id="c3810f5b-260f-4ddf-961b-4a67ca4cc7ad" name="discountFlow"/>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="Flow Reference" doc:id="d78f0a48-3039-4971-bb92-b92c9675b22d" name="noDiscountFlow"/>
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="discountFlow" doc:id="d13da424-c719-42da-9739-b52b93d10d4d" >
+		<set-variable value="#[correlationId]" doc:name="Set Variable" doc:id="97cc532a-2310-4517-9b7a-8b3ecd239b87" variableName="correlationId"/>
+		<set-variable value="#[payload.movieId]" doc:name="Set Variable" doc:id="8defa549-b6a4-4384-a2df-18c3b84eba9f" variableName="movieId"/>
+		<set-variable value="#[payload.numberOfTickets]" doc:name="Set Variable" doc:id="339d26bd-d60a-494a-b29c-25f51ff80607" variableName="numberOfTickets"/>
+		<db:insert doc:name="Insert" doc:id="8e81a0b0-57fd-40c8-9bdd-807e9bd065bb" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO `sql6467738`.`bookedticket` (`ticketId`, `city`, `movieName`, `numberOfTickets`, `theatreName`, `amountPaid`, 
+`schedule`, `correlationId`, `discountValue`) VALUES (uuid_short(), :city, :movieName, :numberOfTickets, :theatreName, 
+(:amountPaid-100), :schedule, :correlationId, '100');
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"city": payload."city","movieName": payload."movieName" ,"numberOfTickets": payload."numberOfTickets",
+"theatreName": payload."theatreName","schedule": payload."dateTime",
+"amountPaid": payload."amountPaid","correlationId":vars."correlationId"}]]]></db:input-parameters>
+		</db:insert>
+		<db:update doc:name="Update" doc:id="d3f6e8b2-1adc-4831-8ea5-f7cde33fa6dd" config-ref="Database_Config">
+			<db:sql ><![CDATA[UPDATE `sql6467738`.`main` SET `vacancies` = vacancies - :numberOfTickets WHERE (`id` = :id);
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"id": vars."movieId","numberOfTickets": vars."numberOfTickets"}]]]></db:input-parameters>
+		</db:update>
+		<db:select doc:name="Select" doc:id="009c9413-1e18-4e11-a66a-bd1fa28c7026" config-ref="Database_Config">
+			<db:sql ><![CDATA[select ticketId,city,movieName,numberOfTickets,theatreName,amountPaid,schedule,discountValue from bookedticket where correlationId = :correlationId;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"correlationId" : vars.correlationId}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="7c7aff63-bedf-4aa3-9876-3946102f412a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="10c16525-7857-4920-8e4a-8bc83df03edd" message="#[payload]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="75a6ade3-e277-45fb-8f68-ad453386f88a" type="DB:BAD_SQL_SYNTAX">
+				<ee:transform doc:name="Transform Message" doc:id="bd1b4291-c5fb-4f56-a01b-f4601ce188b5" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9cb518ce-b07b-47c2-8e4c-14d2ff9267cf" type="DB:CONNECTIVITY">
+				<ee:transform doc:name="Transform Message" doc:id="6f0e1ab9-504a-4c39-a4d2-bd76425a6f38" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "database connectivity error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="7dbffaae-565a-4829-b65d-a84cd0a78a58" type="DB:QUERY_EXECUTION" >
+				<ee:transform doc:name="Copy_of_Transform Message" doc:id="fe26da64-e55e-4666-b640-50d02627a62e" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{message: "query execution error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="noDiscountFlow" doc:id="4a983d34-be90-4f28-8cff-6560fd93e697" >
+		<set-variable value="#[correlationId]" doc:name="Set Variable" doc:id="82eb45e2-f764-4768-a98e-c975a2a5453e" variableName="correlationId" />
+		<set-variable value="#[payload.movieId]" doc:name="Copy_of_Set Variable" doc:id="d7bd67d2-6d3c-4b0d-88c2-cabcab34e6e5" variableName="movieId" />
+		<set-variable value="#[payload.numberOfTickets]" doc:name="Copy_of_Set Variable" doc:id="67df92df-dfd4-4366-91e9-a79bc2b4341f" variableName="numberOfTickets" />
+		<db:insert doc:name="Insert" doc:id="56e37a46-0b0b-492d-9959-567db56bddba" config-ref="Database_Config" >
+			<db:sql ><![CDATA[INSERT INTO `sql6467738`.`bookedticket` (`ticketId`, `city`, `movieName`, `numberOfTickets`, `theatreName`, `amountPaid`, 
+`schedule`, `correlationId`, `discountValue`) VALUES (uuid_short(), :city, :movieName, :numberOfTickets, :theatreName, 
+:amountPaid, :schedule, :correlationId, '0');
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"city": payload."city","movieName": payload."movieName" ,"numberOfTickets": payload."numberOfTickets",
+"theatreName": payload."theatreName","schedule": payload."dateTime",
+"amountPaid": payload."amountPaid","correlationId":vars."correlationId"}]]]></db:input-parameters>
+		</db:insert>
+		<db:update doc:name="Copy_of_Update" doc:id="ac3c19ad-51c2-465c-bdea-81dea869a861" config-ref="Database_Config">
+			<db:sql><![CDATA[UPDATE `sql6467738`.`main` SET `vacancies` = vacancies - :numberOfTickets WHERE (`id` = :id);
+]]></db:sql>
+			<db:input-parameters><![CDATA[#[{"id": vars."movieId","numberOfTickets": vars."numberOfTickets"}]]]></db:input-parameters>
+		</db:update>
+		<db:select doc:name="Select" doc:id="1546a5b1-a88e-41f8-b9a8-8be471a0a076" config-ref="Database_Config" >
+			<db:sql ><![CDATA[select ticketId,city,movieName,numberOfTickets,theatreName,amountPaid,schedule,discountValue from bookedticket where correlationId = :correlationId;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{"correlationId" : vars.correlationId}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Copy_of_Transform Message" doc:id="6c54b705-57df-4451-ae95-d361d776a4c5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="c7c10e23-41dd-4f89-bf44-64b4ab1319b3" message="#[payload]" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="802c34c8-a1bb-4dfc-b55e-1640d768e29f" type="DB:BAD_SQL_SYNTAX" >
+				<ee:transform doc:name="Copy_of_Transform Message" doc:id="b2f0196d-6394-4e3d-8c5a-418760dd0ed0" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="56475499-3160-492c-9f7c-f22686802c7f" type="DB:CONNECTIVITY" >
+				<ee:transform doc:name="Copy_of_Transform Message" doc:id="c17f9e40-ee91-464b-b833-81b2d57109b5" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "database connectivity error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="Copy_of_On Error Propagate" doc:id="60307ddb-9c1c-4afd-a9e9-f67c5fa54478" type="DB:QUERY_EXECUTION" >
+				<ee:transform doc:name="Copy_of_Transform Message" doc:id="2fa7a327-feed-4bb7-9d2b-d60582510b34" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{message: "query execution error"}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>
