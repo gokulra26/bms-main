@@ -11,7 +11,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</db:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="4e6c9c6d-6719-4666-8ac6-2a07341ed53f" file="config.yaml" />
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="aa86bb48-3d8c-4a8e-9889-227b62d7f583" >
-		<http:listener-connection host="0.0.0.0" port="8082" />
+		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
 	<error-handler name="globalError_Handler" doc:id="f74be760-f0d1-404d-b4f5-8ad7c5a7be3a" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="13798bf0-2d22-4e7d-8e1e-2adc2bd7c645" type="ANY">
