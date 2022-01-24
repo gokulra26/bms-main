@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.mule.tooling.API_SPEC_LIB/fb7246a7-c6f5-4f81-bb9d-a77857c8ecce/bms-main/1.0.6"/>
-	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.munit/munit-tools/2.3.7"/>
 	<classpathentry kind="con" path="org.mule.tooling.MULE_PROJECT_LIB"/>
+	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.munit/munit-tools/2.3.7"/>
 	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.munit/munit-runner/2.3.7"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-wsc-connector/1.6.7"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-db-connector/1.11.0"/>

@@ -1,0 +1,80 @@
+#%RAML 1.0
+title: bms-main
+version: 1.0
+types:
+  getmovies: !include Types/getMovies.raml
+  bookTicket: !include Types/bookTickets.raml
+  showTicket: !include Types/ticketShow.raml
+  
+traits:
+  credentials-required:
+    headers:
+      username:
+        type: string
+      password:
+        type: string
+    responses:
+      401:
+        description: Unauthorized !!!. Client_id and Client_Secret are invalid.
+      429:
+        description: Quota exceeded for the current session
+      503:
+        description: Information Unreacheable
+
+/getmovies:
+  get:
+    displayName:  Get movies
+    queryParameters:
+      city:
+        description: City Name
+        required: true
+        enum:
+          - Mumbai
+          - Bangalore
+          - New Delhi
+          - Hyderabad    
+    responses:
+      200:
+        body:
+          application/json:
+            type: getmovies[]
+            examples:
+              output: !include examplesget/getMoviesExamples.raml
+              
+
+/bookingTicket:
+  post:
+    body:
+      application/json:
+        type: bookTicket
+        examples:
+          input: !include examplesget/bookTicket.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: Tickets has been booked and ther Ticket ID is
+
+
+/ticket:
+  get:
+    displayName: Ticket
+    queryParameters:
+      id:
+        description: TicketID
+        type: number
+        required: true
+    responses:
+      200:
+        body:
+          application/json:
+            type: showTicket[]
+            examples:
+              output: !include examplesget/showTicketExample.raml
+
+
+      
+          
+
+        

@@ -137,13 +137,12 @@
 			<classifier>mule-plugin</classifier>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>fb7246a7-c6f5-4f81-bb9d-a77857c8ecce</groupId>
-			<artifactId>bms-main</artifactId>
-			<version>1.0.6</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
+	<dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>1.6.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
 	</dependencies>
 
 	<repositories>
